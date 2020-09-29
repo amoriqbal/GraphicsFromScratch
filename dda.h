@@ -42,5 +42,6 @@ protected:
     void boundaryFill(QPainter *g, int x1, int y1,QColor col);
     QColor getPixel(int x1,int y1);
     void drawTree(QPainter *g, int x1, int y1);
+    void virtual paint(QPainter *g);
 };
 #endif // DDA_H

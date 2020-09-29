@@ -17,10 +17,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
-    dda.cpp
+    dda.cpp \
+    midcircle.cpp
 
 HEADERS += \
-    dda.h
+    dda.h \
+    midcircle.h
 
 FORMS += \
     dda.ui

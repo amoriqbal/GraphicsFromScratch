@@ -22,14 +22,17 @@ void DDA::paintEvent(QPaintEvent *e)
 {
     Q_UNUSED(e);
     QPainter qp(this);
-    int x1[]={-5,5,10,0,-10};
-    int y1[]={5,5,0,-5,0};
+//    int x1[]={-5,5,10,0,-10};
+//    int y1[]={5,5,0,-5,0};
     drawGrid(&qp);
-    drawTree(&qp,0,5);
-    drawTree(&qp,-30,20);
-    drawTree(&qp,30,10);
+//    drawTree(&qp,0,5);
+//    drawTree(&qp,-30,20);
+//    drawTree(&qp,30,10);
+    paint(&qp);
 }
 
+void DDA::paint(QPainter *g){
+}
 void DDA::drawGrid(QPainter *qp){
     drawHGrid(qp);
     drawVGrid(qp);
@@ -234,7 +237,6 @@ void DDA::boundaryFill(QPainter *g, int x1, int y1,QColor col){
     if(getPixel(x1,y1)==col){
         return;
     }
-    printf("boundary\n");
     if(getPixel(x1,y1)==bg){
         plot(g,x1,y1,col);
         boundaryFill(g,x1+1,y1,col);
