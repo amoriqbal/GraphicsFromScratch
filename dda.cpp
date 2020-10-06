@@ -275,3 +275,19 @@ void DDA::drawTree(QPainter *g, int x1, int y1){
     boundaryFill(g,x1,y1-35,QColor(255,203,154));
 
 }
+
+void DDA::on_zoomOut_clicked()
+{
+    zoomout();
+}
+
+
+void DDA::on_zoomIn_clicked()
+{
+    zoomin();
+}
+
+void DDA::on_pushButton_clicked()
+{
+
+}

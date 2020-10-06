@@ -43,5 +43,9 @@ protected:
     QColor getPixel(int x1,int y1);
     void drawTree(QPainter *g, int x1, int y1);
     void virtual paint(QPainter *g);
+private slots:
+    void on_zoomOut_clicked();
+    void on_zoomIn_clicked();
+    virtual void on_pushButton_clicked();
 };
 #endif // DDA_H

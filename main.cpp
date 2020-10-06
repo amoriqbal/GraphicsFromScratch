@@ -6,16 +6,31 @@
 #include <unistd.h>
 class MovingCircle : public MidCircle{
 public:
+    volatile int state;
     int cx,cy;
-    MovingCircle():cx(-8),cy(0){}
+    MovingCircle():cx(-8),cy(0),state(0){}
     void setCenter(int cx1,int cy1){
         cx=cx1;
         cy=cy1;
         this->update();
     }
     void virtual paint(QPainter *g){
-        drawCircle(g,cx,cy,10,Qt::blue,Qt::yellow);
-
+        if(state!=0){
+            drawCircle(g,cx++,cy,10,Qt::blue,Qt::yellow);
+            this->update();
+            usleep(100000);
+        } else {
+            drawCircle(g,cx,cy,10,Qt::blue,Qt::yellow);
+        }
+    }
+private slots:
+    void virtual on_pushButton_clicked(){
+        if(state==0){
+            state++;
+            this->update();
+        }else{
+            state=0;
+        }
     }
 };
 
@@ -24,13 +39,6 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     MovingCircle w;
     w.show();
-    for(int i=0;i<10;i++)
-    {
-        //std::this_thread::sleep_for(std::chrono::milliseconds(5000));
-        usleep(1);
-        w.setCenter(-8+i,0);
-    }
-
     return a.exec();
 }
 
