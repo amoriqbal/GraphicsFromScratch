@@ -1,14 +1,14 @@
 #include "dda.h"
-#include "midcircle.h"
+#include "midellipse.h"
 #include <QApplication>
 #include <chrono>
 #include <thread>
 #include <unistd.h>
-class MovingCircle : public MidCircle{
+class MovingEllipse : public MidEllipse{
 public:
     volatile int state;
     int cx,cy;
-    MovingCircle():cx(-8),cy(0),state(0){}
+    MovingEllipse():cx(-8),cy(0),state(0){}
     void setCenter(int cx1,int cy1){
         cx=cx1;
         cy=cy1;
@@ -16,12 +16,13 @@ public:
     }
     void virtual paint(QPainter *g){
         if(state!=0){
-            drawCircle(g,cx++,cy,10,Qt::blue,Qt::yellow);
+            drawEllipse(g,cx++,cy,15,10,Qt::blue,Qt::yellow);
             this->update();
             usleep(100000);
         } else {
-            drawCircle(g,cx,cy,10,Qt::blue,Qt::yellow);
+            drawEllipse(g,cx,cy,15,10,Qt::blue,Qt::yellow);
         }
+        //drawEllipse(g,0,0,5,8,Qt::blue,Qt::yellow);
     }
 private slots:
     void virtual on_pushButton_clicked(){
@@ -37,7 +38,7 @@ private slots:
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MovingCircle w;
+    MovingEllipse w;
     w.show();
     return a.exec();
 }

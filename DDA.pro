@@ -18,11 +18,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     main.cpp \
     dda.cpp \
-    midcircle.cpp
+    midcircle.cpp \
+    midellipse.cpp
 
 HEADERS += \
     dda.h \
-    midcircle.h
+    midcircle.h \
+    midellipse.h
 
 FORMS += \
     dda.ui
