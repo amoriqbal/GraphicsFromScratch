@@ -24,7 +24,7 @@ private:
 
 protected:
     std::vector<Pix> pix;
-    int gap;
+    int gap, shiftx,shifty;
     void drawGrid(QPainter *qp);
     void drawHGrid(QPainter *qp);
     void drawVGrid(QPainter *qp);
@@ -43,6 +43,8 @@ protected:
     QColor getPixel(int x1,int y1);
     void drawTree(QPainter *g, int x1, int y1);
     void virtual paint(QPainter *g);
+    bool eventFilter(QObject *object, QEvent *ev);
+
 private slots:
     void on_zoomOut_clicked();
     void on_zoomIn_clicked();

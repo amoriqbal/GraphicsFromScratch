@@ -3,6 +3,7 @@
 #include<QPainter>
 #include<iostream>
 #include<math.h>
+#include<QKeyEvent>
 
 using namespace  std;
 DDA::DDA(QWidget *parent)
@@ -11,6 +12,9 @@ DDA::DDA(QWidget *parent)
 {
     ui->setupUi(this);
     gap=10;
+    shiftx=0;
+    shifty=0;
+    this->installEventFilter(this);
 }
 
 DDA::~DDA()
@@ -25,6 +29,7 @@ void DDA::paintEvent(QPaintEvent *e)
 //    int x1[]={-5,5,10,0,-10};
 //    int y1[]={5,5,0,-5,0};
     drawGrid(&qp);
+    pix.clear();
 //    drawTree(&qp,0,5);
 //    drawTree(&qp,-30,20);
 //    drawTree(&qp,30,10);
@@ -43,14 +48,16 @@ void DDA::drawHGrid(QPainter *qp){
     w=width();
     QPen pen(Qt::red,3,Qt::SolidLine);
     qp->setPen(pen);
-    qp->drawLine(0,h/2,w,h/2);
+    qp->drawLine(0,h/2+shifty,w,h/2+shifty);
 
     QPen pen2(Qt::black,1,Qt::SolidLine);
     qp->setPen(pen2);
 
-    for(int y=gap;y<h/2;y+=gap){
-        qp->drawLine(0,h/2+y,w,h/2+y);
-        qp->drawLine(0,h/2-y,w,h/2-y);
+    for(int y=gap;y<h/2-shifty;y+=gap){
+        qp->drawLine(0,h/2+y+shifty,w,h/2+y+shifty);
+    }
+    for(int y=gap;y<h/2+shifty;y+=gap){
+        qp->drawLine(0,h/2-y+shifty,w,h/2-y+shifty);
     }
 }
 
@@ -60,14 +67,16 @@ void DDA::drawVGrid(QPainter *qp){
     w=width();
     QPen pen(Qt::red,3,Qt::SolidLine);
     qp->setPen(pen);
-    qp->drawLine(w/2,0,w/2,h);
+    qp->drawLine(w/2+shiftx,0,w/2+shiftx,h);
 
     QPen pen2(Qt::black,1,Qt::SolidLine);
     qp->setPen(pen2);
 
-    for(int x=gap;x<w/2;x+=gap){
-        qp->drawLine(w/2+x,0,w/2+x,h);
-        qp->drawLine(w/2-x,0,w/2-x,h);
+    for(int x=gap;x<w/2-shiftx;x+=gap){
+        qp->drawLine(w/2+x+shiftx,0,w/2+x+shiftx,h);
+    }
+    for(int x=gap;x<w/2+shiftx;x+=gap){
+        qp->drawLine(w/2-x+shiftx,0,w/2-x+shiftx,h);
     }
 }
 
@@ -76,7 +85,7 @@ void DDA::plot(QPainter *qp,int x1, int y1){
 }
 
 void DDA::plot(QPainter *qp,int x1, int y1,QColor col){
-    qp->fillRect(x(x1)-gap/3,y(y1)-gap/3,gap*2/3,gap*2/3,col);
+    qp->fillRect(x(x1)-gap/4+shiftx,y(y1)-gap/4+shifty,gap*3/4,gap*3/4,col);
     pix.push_back({col,x1,y1});
 }
 
@@ -286,7 +295,33 @@ void DDA::on_zoomIn_clicked()
 {
     zoomin();
 }
+bool DDA::eventFilter(QObject *object, QEvent *ev)
+{
+      if (ev->type() == QEvent::KeyPress)
+      {
+           QKeyEvent* keyEvent = (QKeyEvent*)ev;
 
+           if (keyEvent->key() == Qt::Key_D)
+           {
+              shiftx+=3;
+              this->repaint();
+           } else if (keyEvent->key() == Qt::Key_A)
+           {
+              shiftx-=3;
+              this->repaint();
+           } else if (keyEvent->key() == Qt::Key_W)
+           {
+              shifty-=3;
+              this->repaint();
+           } else if (keyEvent->key() == Qt::Key_S)
+           {
+              shifty+=3;
+              this->repaint();
+           }
+    }
+
+    return false;
+}
 void DDA::on_pushButton_clicked()
 {
 

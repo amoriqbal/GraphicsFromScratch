@@ -1,7 +1,7 @@
 #include "midellipse.h"
 #include <cmath>
 
-void MidEllipse::drawEllipse(QPainter *g, int xc,int yc, int rx, int ry, QColor bound=Qt::blue, QColor fill=Qt::yellow){
+void MidEllipse::drawEllipse(QPainter *g, int xc,int yc, int rx, int ry, QColor bound=Qt::blue, QColor fill=Qt::yellow, bool q1=true,bool q2=true,bool q3=true,bool q4=true){
 
     float dx, dy, d1, d2, x, y;
     x = 0;
@@ -23,15 +23,16 @@ void MidEllipse::drawEllipse(QPainter *g, int xc,int yc, int rx, int ry, QColor 
         //        printf("(%f, %f)\n", -x + xc, y + yc);
         //        printf("(%f, %f)\n", x + xc, -y + yc);
         //        printf("(%f, %f)\n", -x + xc, -y + yc);
-        for(int yy=-y+1;yy<y;yy++){
-            plot(g,x+xc,yy+yc,fill);
-            plot(g,-x+xc,yy+yc,fill);
+        for(int yy=(q3|q4?-y+1:1);yy<(q1|q2?y:0);yy++){
+            plot(g,(q1|q4?x:0)+xc,yy+yc,fill);
+            plot(g,(q2|q3?-x:0)+xc,yy+yc,fill);
         }
 
-        plot(g,x+xc,y+yc,bound);
-        plot(g,-x+xc,y+yc,bound);
-        plot(g,x+xc,-y+yc,bound);
-        plot(g,-x+xc,-y+yc,bound);
+        if(q1) plot(g,x+xc,y+yc,bound);
+        if(q2) plot(g,-x+xc,y+yc,bound);
+        if(q4) plot(g,x+xc,-y+yc,bound);
+        if(q3) plot(g,-x+xc,-y+yc,bound);
+
 
         // Checking and updating value of
         // decision parameter based on algorithm
@@ -62,15 +63,15 @@ void MidEllipse::drawEllipse(QPainter *g, int xc,int yc, int rx, int ry, QColor 
         //        printf("(%f, %f)\n", -x + xc, y + yc);
         //        printf("(%f, %f)\n", x + xc, -y + yc);
         //        printf("(%f, %f)\n", -x + xc, -y + yc);
-        for(int xx=-x+1;xx<x;xx++){
-            plot(g,xx+xc,y+yc,fill);
-            plot(g,xx+xc,-y+yc,fill);
+        for(int xx=(q2|q3?-x+1:1);xx<(q1|q4?x:0);xx++){
+            plot(g,xx+xc,(q1|q2?y:0)+yc,fill);
+            plot(g,xx+xc,(q3|q4?-y:0)+yc,fill);
         }
 
-        plot(g,x+xc,y+yc,bound);
-        plot(g,-x+xc,y+yc,bound);
-        plot(g,x+xc,-y+yc,bound);
-        plot(g,-x+xc,-y+yc,bound);
+        if(q1) plot(g,x+xc,y+yc,bound);
+        if(q2) plot(g,-x+xc,y+yc,bound);
+        if(q4) plot(g,x+xc,-y+yc,bound);
+        if(q3) plot(g,-x+xc,-y+yc,bound);
 
 
         // Checking and updating parameter
