@@ -326,3 +326,8 @@ void DDA::on_pushButton_clicked()
 {
 
 }
+
+void DDA::on_pushButton_2_pressed()
+{
+
+}

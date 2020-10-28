@@ -5,7 +5,7 @@
 #include <array>
 #include <vector>
 #include <cmath>
-#include "dda.h"
+#include "midellipse.h"
 
 using namespace std;
 //class AngleEllipse:public Drawable{
@@ -16,19 +16,31 @@ using namespace std;
 //    void draw(QPainter *g) {}
 
 //};
-
 class Drawable{
 public:
+    int cx,cy;
+    MidEllipse *dda;
+
+    Drawable(int _cx, int _cy, MidEllipse *d):cx(_cx),cy(_cy),dda(d){}
     virtual void draw(QPainter *g)=0;
     virtual void updateParams()=0;
 };
 
+class AngleBird:public Drawable{
+public:
+    float angle;
+    AngleBird(int _cx, int _cy, float _angle,MidEllipse *d):angle(_angle),Drawable(_cx,_cy,d){}
+
+    void draw(QPainter *g){
+        dda->drawEllipse(g,cx,cy,10,5,Qt::red,Qt::blue,true,true,true,true);
+    }
+};
+
 class AngleTree:public Drawable{
 public:
-    int cx,cy;
+
     float angle;
-    DDA *dda;
-    AngleTree(int _cx, int _cy, float _angle,DDA *d):cx(_cx),cy(_cy),angle(_angle),dda(d){}
+    AngleTree(int _cx, int _cy, float _angle,MidEllipse *d):angle(_angle),Drawable(_cx,_cy,d){}
     void draw(QPainter *g){
 
         //base

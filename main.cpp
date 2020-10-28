@@ -87,7 +87,7 @@ class Renderer:public MidEllipse{
 public:
     vector<Drawable*> drawObjects;
 
-    int toSpawn;
+    volatile int toSpawn;
     Renderer():toSpawn(0){}
 
     void paint(QPainter *g){
@@ -102,10 +102,33 @@ public:
         this->update();
     }
 
+    int getXInv(int x1){
+        return (x1-width()/2)/gap;
+    }
+
+    int getYInv(int y1){
+        return -(y1-height()/2)/gap;
+    }
     void mousePressEvent(QMouseEvent *pressEvent){
         QPointF p=pressEvent->localPos();
-        Drawable *d=new AngleTree(0,0,0,this);
+        Drawable *d;
+        switch (toSpawn) {
+        case 0:
+            d=new AngleTree(getXInv(p.x()),getYInv(p.y()),0,this);
+            break;
+        case 1:
+            d=new AngleTree(getXInv(p.x()),getYInv(p.y()),0,this);
+            break;
+        default:
+            break;
+        }
+
         drawObjects.push_back(d);
+    }
+private slots:
+    void on_pushButton_2_pressed(){
+        toSpawn=(toSpawn+1)%2;
+        zoomin();
     }
 };
 

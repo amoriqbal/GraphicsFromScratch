@@ -51,5 +51,6 @@ private slots:
     void on_zoomOut_clicked();
     void on_zoomIn_clicked();
     virtual void on_pushButton_clicked();
+    virtual void on_pushButton_2_pressed();
 };
 #endif // DDA_H
