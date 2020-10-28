@@ -22,7 +22,7 @@ public:
 private:
     Ui::DDA *ui;
 
-protected:
+public:
     std::vector<Pix> pix;
     int gap, shiftx,shifty;
     void drawGrid(QPainter *qp);
@@ -30,8 +30,6 @@ protected:
     void drawVGrid(QPainter *qp);
     void zoomin();
     void zoomout();
-
-public:
     void plot(QPainter *qp, int x1, int y1);
     void plot(QPainter *qp, int x1, int y1, QColor col);
     int x(int x);

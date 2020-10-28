@@ -117,7 +117,7 @@ public:
             d=new AngleTree(getXInv(p.x()),getYInv(p.y()),0,this);
             break;
         case 1:
-            d=new AngleTree(getXInv(p.x()),getYInv(p.y()),0,this);
+            d=new AngleBird(getXInv(p.x()),getYInv(p.y()),0,this);
             break;
         default:
             break;
@@ -128,7 +128,6 @@ public:
 private slots:
     void on_pushButton_2_pressed(){
         toSpawn=(toSpawn+1)%2;
-        zoomin();
     }
 };
 
