@@ -30,6 +30,8 @@ protected:
     void drawVGrid(QPainter *qp);
     void zoomin();
     void zoomout();
+
+public:
     void plot(QPainter *qp, int x1, int y1);
     void plot(QPainter *qp, int x1, int y1, QColor col);
     int x(int x);
