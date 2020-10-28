@@ -60,23 +60,23 @@ public:
         }
 
         for(int i = 0; i< xb3.size();i++){
-            xa1.push_back(cx + xb3[i]*cos(angle) - yb3[i]*sin(angle));
-            ya1.push_back(cy + xb3[i]*sin(angle) + yb3[i]*cos(angle));
+            xa3.push_back(cx + xb3[i]*cos(angle) - yb3[i]*sin(angle));
+            ya3.push_back(cy + xb3[i]*sin(angle) + yb3[i]*cos(angle));
         }
 
         for(int i = 0; i< xb4.size();i++){
-            xa1.push_back(cx + xb4[i]*cos(angle) - yb4[i]*sin(angle));
-            ya1.push_back(cy + xb4[i]*sin(angle) + yb4[i]*cos(angle));
+            xa4.push_back(cx + xb4[i]*cos(angle) - yb4[i]*sin(angle));
+            ya4.push_back(cy + xb4[i]*sin(angle) + yb4[i]*cos(angle));
         }
         dda->drawPoly(g,4,xa3.data(),ya3.data(),Qt::black);
         dda->drawPoly(g,4,xa2.data(),ya2.data(),QColor(255,203,154));
         dda->drawPoly(g,4,xa4.data(),ya4.data(),QColor(255,203,154));
         dda->drawPoly(g,11,xa1.data(),ya1.data(),Qt::darkGreen);
 
-        dda->boundaryFill(g,cx,cy-5,Qt::green);
-        dda->boundaryFill(g,cx,cy-45,Qt::darkGray);
-        dda->boundaryFill(g,cx,cy-25,QColor(255,203,154));
-        dda->boundaryFill(g,cx,cy-35,QColor(255,203,154));
+        dda->boundaryFill(g,cx+5*sin(angle) ,cy-5*cos(angle),Qt::green);
+        dda->boundaryFill(g,cx+45*sin(angle),cy-45*cos(angle),Qt::darkGray);
+        dda->boundaryFill(g,cx+25*sin(angle),cy-25*cos(angle),QColor(255,203,154));
+        dda->boundaryFill(g,cx+35*sin(angle),cy-35*cos(angle),QColor(255,203,154));
     }
 
 };
