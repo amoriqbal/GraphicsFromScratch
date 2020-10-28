@@ -5,19 +5,20 @@
 #include <thread>
 #include <unistd.h>
 #include "AngleEllipse.cpp"
+#include <QMouseEvent>
 
-class MovingEllipse : public MidEllipse{
-public:
-    AngleTree a;
-    volatile int state;
-    int cx,cy;
-    MovingEllipse():cx(-8),cy(0),state(0),a(0,0,1.57,this){}
-    void setCenter(int cx1,int cy1){
-        cx=cx1;
-        cy=cy1;
-        this->update();
-    }
-    void virtual paint(QPainter *g){
+//class MovingEllipse : public MidEllipse{
+//public:
+//    AngleTree a;
+//    volatile int state;
+//    int cx,cy;
+//    MovingEllipse():cx(-8),cy(0),state(0),a(0,0,1.57,this){}
+//    void setCenter(int cx1,int cy1){
+//        cx=cx1;
+//        cy=cy1;
+//        this->update();
+//    }
+//    void virtual paint(QPainter *g){
 //        if(state==1){
 //            drawBird(g,cx,cy);
 //            usleep(100000);
@@ -28,8 +29,8 @@ public:
 //            drawBird(g,cx,cy);
 //            a.draw(g);
 //        }
-        a.draw(g);
-    }
+//        a.draw(g);
+//    }
 //    void drawBird(QPainter *g, int cx, int cy){
 //        pix.clear();
 //        drawTail(g,65+cx,-8+cy,Qt::black,Qt::red);
@@ -80,12 +81,38 @@ public:
 //    }
 
 
+//};
+
+class Renderer:public MidEllipse{
+public:
+    vector<Drawable*> drawObjects;
+
+    int toSpawn;
+    Renderer():toSpawn(0){}
+
+    void paint(QPainter *g){
+        if(drawObjects.size()>0){
+            for(auto drawable : drawObjects){
+                drawable->draw(g);
+                pix.clear();
+                drawable->updateParams();
+            }
+        }
+        usleep(100000);
+        this->update();
+    }
+
+    void mousePressEvent(QMouseEvent *pressEvent){
+        QPointF p=pressEvent->localPos();
+        Drawable *d=new AngleTree(0,0,0,this);
+        drawObjects.push_back(d);
+    }
 };
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MovingEllipse w;
+    Renderer w;
     w.show();
     return a.exec();
 }

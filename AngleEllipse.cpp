@@ -20,6 +20,7 @@ using namespace std;
 class Drawable{
 public:
     virtual void draw(QPainter *g)=0;
+    virtual void updateParams()=0;
 };
 
 class AngleTree:public Drawable{
@@ -78,7 +79,9 @@ public:
         dda->boundaryFill(g,cx+25*sin(angle),cy-25*cos(angle),QColor(255,203,154));
         dda->boundaryFill(g,cx+35*sin(angle),cy-35*cos(angle),QColor(255,203,154));
     }
-
+    void updateParams(){
+        cx++;
+    }
 };
 
 #endif
