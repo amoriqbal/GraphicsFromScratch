@@ -10,14 +10,6 @@
 #define yrotate(x1,y1,angle) (x1 * sin(angle) + y1 * cos(angle))
 
 using namespace std;
-//class AngleEllipse:public Drawable{
-//    int a,b,cx,cy;
-//    float angle;
-//    bool q1,q2,q3,q4,bound,fill;
-//    QColor bound_col, fill_col;
-//    void draw(QPainter *g) {}
-
-//};
 class Drawable{
 public:
     int cx,cy;
@@ -30,10 +22,11 @@ public:
 
 class AngleBird:public Drawable{
 public:
-    float angle=0;
-    int scalex=1,scaley=2,wingState=3;
+    float angle=0,head;
+    int scalex=1,scaley=2,wingState=3,tail;
     int speed=1;
     AngleBird(int _cx, int _cy, float _angle,MidEllipse *d):angle(_angle),Drawable(_cx,_cy,d){}
+    AngleBird(int _cx, int _cy, float _angle, float _head, int _sx,int _sy, int _wing, int _tail,MidEllipse *d):Drawable(_cx,_cy,d),angle(_angle),head(_head),scalex(_sx),scaley(_sy),wingState(_wing),tail(_tail){}
 
     void draw(QPainter *g){
         dda->pix.clear();
@@ -45,60 +38,43 @@ public:
         dda->drawTiltedEllipse(g,cx+xrotate(18,3,angle)*scalex,cy+yrotate(18,3,angle)*scaley,2,2,angle,Qt::black,Qt::cyan,scalex,scaley);
 
     }
+    void drawPeck(QPainter *g, int cx, int cy, float angle,QColor bound, QColor fill){
+        dda->pix.clear();
+        int xarr[]={ cx, cx + xrotate(10,3,angle)*scalex, cx + xrotate(10,-3,angle)*scalex};
+        int yarr[]={cy, cy + yrotate(10,3,angle)*scaley, cy + yrotate(10,-3,angle)*scaley};
+        dda->drawPoly(g,3,xarr,yarr,bound);
+        dda->boundaryFill(g,cx+xrotate(5,0,angle)*scalex,cy+yrotate(5,0,angle)*scaley,fill);
+    }
 
-    //void drawBird(QPainter *g, int cx, int cy){
-    //        pix.clear();
-    //        drawTail(g,65+cx,-8+cy,Qt::black,Qt::red);
-    //        drawEllipse(g,18+cx,0+cy,8,8,Qt::black,Qt::yellow,true,true,true,true);
-    //        drawEllipse(g,45+cx,-11+cy,24,12,Qt::black,Qt::yellow,true,true,true,true);
+    void drawTail(QPainter *g, int cx, int cy, float angle, QColor bound, QColor fill){
+        dda->pix.clear();
+        int xarr[]={cx,cx+xrotate(10,8,angle)*scalex,cx+xrotate(15,0,angle)*scalex};
+        int yarr[]={cy,cy+yrotate(10,8,angle)*scaley,cy+yrotate(15,0,angle)*scaley};
+        dda->drawPoly(g,3,xarr,yarr,bound);
+        dda->boundaryFill(g,cx+xrotate(5,1,angle)*scalex,cy+yrotate(5,1,angle)*scaley,fill);
+    }
 
-    //        drawWing(g,40+cx,-11+cy,Qt::black,Qt::magenta);
-    //        //drawEllipse(g,45+cx,-2+cy,14,14,Qt::black,Qt::magenta,true,true,true,true);
-    //        //drawEllipse(g,45+cx,-11+cy,24,12,Qt::black,Qt::yellow,false,false,true,true);
-    //        //midpoint(g,35+cx,-10+cy,55+cx,-10+cy,Qt::black);
-    //        drawEllipse(g,18+cx,3+cy,2,2,Qt::blue,Qt::cyan,true,true,true,true);
-    //        drawPeck(g,0+cx,0+cy,Qt::black,Qt::red);
-    //    }
-        void drawPeck(QPainter *g, int cx, int cy, float angle,QColor bound, QColor fill){
-            dda->pix.clear();
-            int xarr[]={ cx, cx + xrotate(10,3,angle)*scalex, cx + xrotate(10,-3,angle)*scalex};
-            int yarr[]={cy, cy + yrotate(10,3,angle)*scaley, cy + yrotate(10,-3,angle)*scaley};
-            dda->drawPoly(g,3,xarr,yarr,bound);
-            dda->boundaryFill(g,cx+xrotate(5,0,angle)*scalex,cy+yrotate(5,0,angle)*scaley,fill);
-        }
-
-        void drawTail(QPainter *g, int cx, int cy, float angle, QColor bound, QColor fill){
-            dda->pix.clear();
-            int xarr[]={cx,cx+xrotate(10,8,angle)*scalex,cx+xrotate(15,0,angle)*scalex};
-            int yarr[]={cy,cy+yrotate(10,8,angle)*scaley,cy+yrotate(15,0,angle)*scaley};
-            dda->drawPoly(g,3,xarr,yarr,bound);
-            dda->boundaryFill(g,cx+xrotate(5,1,angle)*scalex,cy+yrotate(5,1,angle)*scaley,fill);
-        }
-
-        void drawWing(QPainter *g, int px, int py, float angle,QColor bound, QColor fill){
-            dda->pix.clear();
-            int xarr[][4]={{+0,-10,+20,+10},{+0,-10,+20,+10},{+0,-10,+20,+10},{+0,-10,+20,+10}};
-            int yarr[][4]={{+0,+13,+30,+0},{+0,+10,+18,+0},{+0,-15,-18,+0},{+0,+10,+18,+0}};
-            int xf[]={5,5,5,5};
-            int yf[]={2,2,-2,2};
-            vector<int> xf2,yf2;
-            vector<int> xbrr[4],ybrr[4];
-            for(int i=0;i<4;i++){
-                for(int j=0;j<4;j++){
-                    xbrr[i].push_back(px+xrotate(xarr[i][j],yarr[i][j],angle)*scalex);
-                    ybrr[i].push_back(py+yrotate(xarr[i][j],yarr[i][j],angle)*scaley);
-                }
-                xf2.push_back(px+xrotate(xf[i],yf[i],angle)*scalex);
-                yf2.push_back(py+yrotate(xf[i],yf[i],angle)*scaley);
+    void drawWing(QPainter *g, int px, int py, float angle,QColor bound, QColor fill){
+        dda->pix.clear();
+        int xarr[][4]={{+0,-10,+20,+10},{+0,-10,+20,+10},{+0,-10,+20,+10},{+0,-10,+20,+10}};
+        int yarr[][4]={{+0,+13,+30,+0},{+0,+10,+18,+0},{+0,-15,-18,+0},{+0,+10,+18,+0}};
+        int xf[]={5,5,5,5};
+        int yf[]={2,2,-2,2};
+        vector<int> xf2,yf2;
+        vector<int> xbrr[4],ybrr[4];
+        for(int i=0;i<4;i++){
+            for(int j=0;j<4;j++){
+                xbrr[i].push_back(px+xrotate(xarr[i][j],yarr[i][j],angle)*scalex);
+                ybrr[i].push_back(py+yrotate(xarr[i][j],yarr[i][j],angle)*scaley);
             }
-
-            dda->drawPoly(g,4,xbrr[wingState%4].data(),ybrr[wingState%4].data(),bound);
-            dda->boundaryFill(g,xf2[wingState%4],yf2[wingState%4],fill);
-            //plot(g,px+2,yarr[1][1]/2,Qt::blue);
-            //plot(g,px+2,p0,Qt::cyan);
+            xf2.push_back(px+xrotate(xf[i],yf[i],angle)*scalex);
+            yf2.push_back(py+yrotate(xf[i],yf[i],angle)*scaley);
         }
+
+        dda->drawPoly(g,4,xbrr[wingState%4].data(),ybrr[wingState%4].data(),bound);
+        dda->boundaryFill(g,xf2[wingState%4],yf2[wingState%4],fill);
+    }
     void updateParams(){
-        wingState++;
     }
 };
 
@@ -108,6 +84,8 @@ public:
     float angle;
     int scalex=1,scaley=1;
     AngleTree(int _cx, int _cy, float _angle,MidEllipse *d):angle(_angle),Drawable(_cx,_cy,d){}
+    AngleTree(int _cx, int _cy, float _angle, int _sx, int _sy, MidEllipse *d):angle(_angle),scalex(_sx),scaley(_sy), Drawable(_cx,_cy,d){}
+
     void draw(QPainter *g){
 
         //base
@@ -170,7 +148,7 @@ public:
 
     }
     void updateParams(){
-        angle+=0.1;
+        //angle+=0.1;
     }
 };
 

@@ -6,89 +6,24 @@
 #include <unistd.h>
 #include "AngleEllipse.cpp"
 #include <QMouseEvent>
+#include "Settings.cpp"
+#include <QWidget>
+#include <QIcon>
+#include <QAbstractButton>
+#include <ui_dda.h>
 
-//class MovingEllipse : public MidEllipse{
-//public:
-//    AngleTree a;
-//    volatile int state;
-//    int cx,cy;
-//    MovingEllipse():cx(-8),cy(0),state(0),a(0,0,1.57,this){}
-//    void setCenter(int cx1,int cy1){
-//        cx=cx1;
-//        cy=cy1;
-//        this->update();
-//    }
-//    void virtual paint(QPainter *g){
-//        if(state==1){
-//            drawBird(g,cx,cy);
-//            usleep(100000);
-//            //setCenter(cx-1,cy);
-
-//        }
-//        else{
-//            drawBird(g,cx,cy);
-//            a.draw(g);
-//        }
-//        a.draw(g);
-//    }
-//    void drawBird(QPainter *g, int cx, int cy){
-//        pix.clear();
-//        drawTail(g,65+cx,-8+cy,Qt::black,Qt::red);
-//        drawEllipse(g,18+cx,0+cy,8,8,Qt::black,Qt::yellow,true,true,true,true);
-//        drawEllipse(g,45+cx,-11+cy,24,12,Qt::black,Qt::yellow,true,true,true,true);
-
-//        drawWing(g,40+cx,-11+cy,Qt::black,Qt::magenta);
-//        //drawEllipse(g,45+cx,-2+cy,14,14,Qt::black,Qt::magenta,true,true,true,true);
-//        //drawEllipse(g,45+cx,-11+cy,24,12,Qt::black,Qt::yellow,false,false,true,true);
-//        //midpoint(g,35+cx,-10+cy,55+cx,-10+cy,Qt::black);
-//        drawEllipse(g,18+cx,3+cy,2,2,Qt::blue,Qt::cyan,true,true,true,true);
-//        drawPeck(g,0+cx,0+cy,Qt::black,Qt::red);
-//    }
-//    void drawPeck(QPainter *g, int cx, int cy, QColor bound, QColor fill,int scale=1){
-//        pix.clear();
-//        int xarr[]={cx,cx+10,cx+10};
-//        int yarr[]={cy,cy+3,cy-3};
-//        drawPoly(g,3,xarr,yarr,bound);
-//        boundaryFill(g,cx+2,cy,fill);
-//    }
-
-//    void drawTail(QPainter *g, int cx, int cy, QColor bound, QColor fill,int scale=1){
-//        pix.clear();
-//        int xarr[]={cx,cx+10,cx+15};
-//        int yarr[]={cy,cy+8,cy};
-//        drawPoly(g,3,xarr,yarr,bound);
-//        boundaryFill(g,cx+2,cy+1,fill);
-//    }
-
-//    void drawWing(QPainter *g, int px, int py, QColor bound, QColor fill){
-//        pix.clear();
-//        int xarr[][4]={{px+0,px-10,px+20,px+10},{px+0,px-5,px+10,px+5},{px+0,px-5,px+10,px+5},{px+0,px-5,px+10,px+5}};
-//        int yarr[][4]={{py+0,py+13,py+30,py+0},{py+0,py+10,py+18,py+0},{py+0,py-15,py-18,py+0},{py+0,py+10,py+18,py+0}};
-//        drawPoly(g,4,xarr[cx%4],yarr[cx%4],bound);
-//        boundaryFill(g,px+2,py+(yarr[cx%4][1]-py)/2,fill);
-//        //plot(g,px+2,yarr[1][1]/2,Qt::blue);
-//        //plot(g,px+2,p0,Qt::cyan);
-//    }
-
-//private slots:
-//    void virtual on_pushButton_clicked(){
-//        if(state==0){
-//            state++;
-//            this->update();
-//        }else{
-//            state=0;
-//        }
-//    }
-
-
-//};
+using namespace std;
 
 class Renderer:public MidEllipse{
 public:
     vector<Drawable*> drawObjects;
 
     volatile int toSpawn;
-    Renderer():toSpawn(0){}
+    Renderer():toSpawn(0){
+        QPixmap pixm("bird.png");
+        QIcon icon(pixm);
+        ui->bird_button->setIcon(icon);
+    }
 
     void paint(QPainter *g){
         if(drawObjects.size()>0){
@@ -111,30 +46,65 @@ public:
     }
     void mousePressEvent(QMouseEvent *pressEvent){
         QPointF p=pressEvent->localPos();
-        Drawable *d;
+        //Drawable *d;
         switch (toSpawn) {
         case 0:
-            d=new AngleTree(getXInv(p.x()),getYInv(p.y()),0,this);
+            BirdSettings::spawn(drawObjects,getXInv(p.x()),getYInv(p.y()),this);
             break;
         case 1:
-            d=new AngleBird(getXInv(p.x()),getYInv(p.y()),0.5,this);
+            TreeSettings::spawn(drawObjects,getXInv(p.x()),getYInv(p.y()),this);
             break;
         default:
             break;
         }
 
-        drawObjects.push_back(d);
+        //drawObjects.push_back(d);
     }
 private slots:
-    void on_pushButton_2_pressed(){
-        toSpawn=(toSpawn+1)%2;
+
+    void on_bird_button_pressed(){
+        toSpawn=0;
     }
+
+    void on_tree_button_pressed(){
+        toSpawn=1;
+    }
+
+    void on_birdSize_textChanged(const QString &s){
+        BirdSettings::size=s.toInt();
+        if(BirdSettings::size==0){
+            BirdSettings::size=1;
+        }
+    }
+
+    void on_birdTilt_textChanged(const QString &s){
+        BirdSettings::tilt=s.toFloat()*3.242/180;
+    }
+
+    void on_birdHead_textChanged(const QString &s){
+        BirdSettings::head=s.toFloat()*3.142/180;
+    }
+    void on_birdSpeed_textChanged(const QString &s){
+        BirdSettings::speed=s.toInt();
+    }
+    void on_birdFlock_textChanged(const QString &s){
+        BirdSettings::flock=s.toInt();
+    }
+    void on_birdWing_textChanged(const QString &s){
+        BirdSettings::wing=s.toInt();
+    }
+    void on_birdTail_textChanged(const QString &s){
+        BirdSettings::tail=s.toInt();
+    }
+
+
 };
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     Renderer w;
+
     w.show();
     return a.exec();
 }

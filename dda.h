@@ -19,10 +19,10 @@ public:
     DDA(QWidget *parent = nullptr);
     ~DDA();
 
-private:
+public:
     Ui::DDA *ui;
 
-public:
+
     std::vector<Pix> pix;
     int gap, shiftx,shifty;
     void drawGrid(QPainter *qp);
@@ -49,6 +49,14 @@ private slots:
     void on_zoomOut_clicked();
     void on_zoomIn_clicked();
     virtual void on_pushButton_clicked();
-    virtual void on_pushButton_2_pressed();
+    virtual void on_bird_button_pressed();
+    virtual void on_tree_button_pressed();
+    virtual void on_birdSize_textChanged(const QString &s);
+    virtual void on_birdTilt_textChanged(const QString &s);
+    virtual void on_birdHead_textChanged(const QString &s);
+    virtual void on_birdSpeed_textChanged(const QString &s);
+    virtual void on_birdFlock_textChanged(const QString &s);
+    virtual void on_birdWing_textChanged(const QString &s);
+    virtual void on_birdTail_textChanged(const QString &s);
 };
 #endif // DDA_H

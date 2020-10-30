@@ -327,7 +327,47 @@ void DDA::on_pushButton_clicked()
 
 }
 
-void DDA::on_pushButton_2_pressed()
+void DDA::on_bird_button_pressed()
+{
+
+}
+
+void DDA::on_tree_button_pressed()
+{
+
+}
+
+void DDA::on_birdSize_textChanged(const QString &arg1)
+{
+
+}
+
+void DDA::on_birdTilt_textChanged(const QString &s)
+{
+
+}
+
+void DDA::on_birdHead_textChanged(const QString &s)
+{
+
+}
+
+void DDA::on_birdSpeed_textChanged(const QString &s)
+{
+
+}
+
+void DDA::on_birdFlock_textChanged(const QString &s)
+{
+
+}
+
+void DDA::on_birdWing_textChanged(const QString &s)
+{
+
+}
+
+void DDA::on_birdTail_textChanged(const QString &s)
 {
 
 }

@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     AngleEllipse.cpp \
+    Settings.cpp \
     main.cpp \
     dda.cpp \
     midcircle.cpp \
@@ -34,3 +35,6 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    bird.qrc
