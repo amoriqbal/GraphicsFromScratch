@@ -1,6 +1,6 @@
 #include "midellipse.h"
 #include <cmath>
-
+using namespace std;
 void MidEllipse::drawEllipse(QPainter *g, int xc,int yc, int rx, int ry, QColor bound=Qt::blue, QColor fill=Qt::yellow, bool q1=true,bool q2=true,bool q3=true,bool q4=true){
 
     float dx, dy, d1, d2, x, y;
@@ -107,4 +107,60 @@ void MidEllipse::PlotEllipse(QPainter *g,int cx, int cy, int xx, int yy){
     plot(g,cx-xx,cy-yy,Qt::blue);
 }
 
+void MidEllipse::drawTiltedEllipse(QPainter* qp, int cx, int cy, int rx, int ry, double angle, QColor bound, QColor fill, int scalex, int scaley, bool q1, bool q2,bool q3, bool q4)
+{
+    pix.clear();
+    angle=-angle;
+    if(q1==true){
+        for(uint i=0; i<90; ++i)
+        {
+            double pi=3.142;
+            double x1, y1, x2, y2;
+            x1 = cx + rx*cos((pi*i)/180)*cos(angle)*scalex + ry*sin((pi*i)/180)*sin(angle)*scalex;
+            y1 = cy + ry*sin((pi*i)/180)*cos(angle)*scaley - rx*cos((pi*i)/180)*sin(angle)*scaley;
+            x2 = cx + rx*cos((pi*(i+1))/180)*cos(angle)*scalex + ry*sin((pi*(i+1))/180)*sin(angle)*scalex;
+            y2 = cy + ry*sin((pi*(i+1))/180)*cos(angle)*scaley - rx*cos((pi*(i+1))/180)*sin(angle)*scaley;
+            midpoint(qp, round(x1), round(y1), round(x2), round(y2), bound);
+        }
+    }
+    if(q2==true){
+        for(uint i=90; i<180; ++i)
+        {
+            double pi=3.142;
+            double x1, y1, x2, y2;
+            x1 = cx + rx*cos((pi*i)/180)*cos(angle)*scalex + ry*sin((pi*i)/180)*sin(angle)*scalex;
+            y1 = cy + ry*sin((pi*i)/180)*cos(angle)*scaley - rx*cos((pi*i)/180)*sin(angle)*scaley;
+            x2 = cx + rx*cos((pi*(i+1))/180)*cos(angle)*scalex + ry*sin((pi*(i+1))/180)*sin(angle)*scalex;
+            y2 = cy + ry*sin((pi*(i+1))/180)*cos(angle)*scaley - rx*cos((pi*(i+1))/180)*sin(angle)*scaley;
+            midpoint(qp, round(x1), round(y1), round(x2), round(y2), bound);
+        }
+    }
+    if(q3==true){
+        for(uint i=180; i<270; ++i)
+        {
+            double pi=3.142;
+            double x1, y1, x2, y2;
+            x1 = cx + rx*cos((pi*i)/180)*cos(angle)*scalex + ry*sin((pi*i)/180)*sin(angle)*scalex;
+            y1 = cy + ry*sin((pi*i)/180)*cos(angle)*scaley - rx*cos((pi*i)/180)*sin(angle)*scaley;
+            x2 = cx + rx*cos((pi*(i+1))/180)*cos(angle)*scalex + ry*sin((pi*(i+1))/180)*sin(angle)*scalex;
+            y2 = cy + ry*sin((pi*(i+1))/180)*cos(angle)*scaley - rx*cos((pi*(i+1))/180)*sin(angle)*scaley;
+            midpoint(qp, round(x1), round(y1), round(x2), round(y2), bound);
+        }
+    }
+    if(q4==true){
+        for(uint i=270; i<360; ++i)
+        {
+            double pi=3.142;
+            double x1, y1, x2, y2;
+            x1 = cx + rx*cos((pi*i)/180)*cos(angle)*scalex + ry*sin((pi*i)/180)*sin(angle)*scalex;
+            y1 = cy + ry*sin((pi*i)/180)*cos(angle)*scaley - rx*cos((pi*i)/180)*sin(angle)*scaley;
+            x2 = cx + rx*cos((pi*(i+1))/180)*cos(angle)*scalex + ry*sin((pi*(i+1))/180)*sin(angle)*scalex;
+            y2 = cy + ry*sin((pi*(i+1))/180)*cos(angle)*scaley - rx*cos((pi*(i+1))/180)*sin(angle)*scaley;
+            midpoint(qp, round(x1), round(y1), round(x2), round(y2), bound);
+        }
+    }
 
+    if(q1 and q2 and q3 and q4){
+        boundaryFill(qp,cx,cy,fill);
+    }
+}

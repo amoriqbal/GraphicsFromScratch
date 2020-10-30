@@ -117,7 +117,7 @@ public:
             d=new AngleTree(getXInv(p.x()),getYInv(p.y()),0,this);
             break;
         case 1:
-            d=new AngleBird(getXInv(p.x()),getYInv(p.y()),0,this);
+            d=new AngleBird(getXInv(p.x()),getYInv(p.y()),0.5,this);
             break;
         default:
             break;
