@@ -10,7 +10,7 @@ public:
     static void spawn(vector<Drawable*> &dv, int cx, int cy, MidEllipse *dda){
         Drawable *d;
         for(int i=0;i<flock;i++){
-            d=new AngleBird(cx+size*(i/2)*80,cy+size*(i+1)/2*30,tilt,head,size,size,wing,tail,speed,dda);
+            d=new AngleBird(cx+size*(i/2)*80,cy+size*(i+1)%2*50,tilt,head,size,size,wing,tail,speed,dda);
             dv.push_back(d);
         }
     }
