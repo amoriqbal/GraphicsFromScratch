@@ -24,18 +24,18 @@ class AngleBird:public Drawable{
 public:
     float angle=0,head;
     int scalex=1,scaley=2,wingState=3,tail;
-    int speed=1;
+    int speed=0;
     AngleBird(int _cx, int _cy, float _angle,MidEllipse *d):angle(_angle),Drawable(_cx,_cy,d){}
-    AngleBird(int _cx, int _cy, float _angle, float _head, int _sx,int _sy, int _wing, int _tail,MidEllipse *d):Drawable(_cx,_cy,d),angle(_angle),head(_head),scalex(_sx),scaley(_sy),wingState(_wing),tail(_tail){}
+    AngleBird(int _cx, int _cy, float _angle, float _head, int _sx,int _sy, int _wing, int _tail, int _speed, MidEllipse *d):Drawable(_cx,_cy,d),angle(_angle),head(_head),scalex(_sx),scaley(_sy),wingState(_wing),tail(_tail),speed(_speed){}
 
     void draw(QPainter *g){
         dda->pix.clear();
         drawTail(g,cx+xrotate(65,-8,angle)*scalex,cy+yrotate(65,-8,angle)*scaley,angle,Qt::black,Qt::red);
-        dda->drawTiltedEllipse(g,cx+xrotate(18,0,angle)*scalex,cy+yrotate(18,0,angle)*scaley,8,8,angle,Qt::black,Qt::yellow,scalex,scaley);
+        dda->drawTiltedEllipse(g,cx+xrotate(18,0,angle)*scalex,cy+yrotate(18,0,angle)*scaley,8,8,angle+head,Qt::black,Qt::yellow,scalex,scaley);
         dda->drawTiltedEllipse(g,cx+xrotate(45,-11,angle)*scalex,cy+yrotate(45,-11,angle)*scaley,24,12,angle,Qt::black,Qt::yellow,scalex,scaley);
         drawWing(g,cx+xrotate(40,-11,angle)*scalex,cy+yrotate(40,-11,angle)*scaley,angle,Qt::black,Qt::magenta);
-        drawPeck(g,cx,cy,angle,Qt::black,Qt::red);
-        dda->drawTiltedEllipse(g,cx+xrotate(18,3,angle)*scalex,cy+yrotate(18,3,angle)*scaley,2,2,angle,Qt::black,Qt::cyan,scalex,scaley);
+        drawPeck(g,cx+(xrotate(18,0,angle)-xrotate(18,0,angle+head))*scalex,cy+(yrotate(18,0,angle)-yrotate(18,0,angle+head))*scaley,angle+head,Qt::black,Qt::red);
+        dda->drawTiltedEllipse(g,cx+(xrotate(18,3,angle+head)+xrotate(18,0,angle)-xrotate(18,0,angle+head))*scalex,cy+(yrotate(18,3,angle+head)+yrotate(18,0,angle)-yrotate(18,0,angle+head))*scaley,2,2,angle+head,Qt::black,Qt::cyan,scalex,scaley);
 
     }
     void drawPeck(QPainter *g, int cx, int cy, float angle,QColor bound, QColor fill){
@@ -75,6 +75,7 @@ public:
         dda->boundaryFill(g,xf2[wingState%4],yf2[wingState%4],fill);
     }
     void updateParams(){
+        cx+=speed;
     }
 };
 

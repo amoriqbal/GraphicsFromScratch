@@ -352,10 +352,6 @@ void DDA::on_birdHead_textChanged(const QString &s)
 
 }
 
-void DDA::on_birdSpeed_textChanged(const QString &s)
-{
-
-}
 
 void DDA::on_birdFlock_textChanged(const QString &s)
 {
@@ -368,6 +364,11 @@ void DDA::on_birdWing_textChanged(const QString &s)
 }
 
 void DDA::on_birdTail_textChanged(const QString &s)
+{
+
+}
+
+void DDA::on_birdSpeed_textChanged(const QString &s)
 {
 
 }

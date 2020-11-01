@@ -54,9 +54,9 @@ private slots:
     virtual void on_birdSize_textChanged(const QString &s);
     virtual void on_birdTilt_textChanged(const QString &s);
     virtual void on_birdHead_textChanged(const QString &s);
-    virtual void on_birdSpeed_textChanged(const QString &s);
     virtual void on_birdFlock_textChanged(const QString &s);
     virtual void on_birdWing_textChanged(const QString &s);
     virtual void on_birdTail_textChanged(const QString &s);
+    virtual void on_birdSpeed_textChanged(const QString &s);
 };
 #endif // DDA_H
