@@ -372,3 +372,18 @@ void DDA::on_birdSpeed_textChanged(const QString &s)
 {
 
 }
+
+void DDA::on_treeFallover_textChanged(const QString &s)
+{
+
+}
+
+void DDA::on_treeSize_textChanged(const QString &s)
+{
+
+}
+
+void DDA::on_treeForest_textChanged(const QString &s)
+{
+
+}

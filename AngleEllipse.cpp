@@ -23,7 +23,7 @@ public:
 class AngleBird:public Drawable{
 public:
     float angle=0,head;
-    int scalex=1,scaley=2,wingState=3,tail;
+    int scalex=1,scaley=2,wingState=0,tail;
     int speed=0;
     AngleBird(int _cx, int _cy, float _angle,MidEllipse *d):angle(_angle),Drawable(_cx,_cy,d){}
     AngleBird(int _cx, int _cy, float _angle, float _head, int _sx,int _sy, int _wing, int _tail, int _speed, MidEllipse *d):Drawable(_cx,_cy,d),angle(_angle),head(_head),scalex(_sx),scaley(_sy),wingState(_wing),tail(_tail),speed(_speed){}
@@ -76,6 +76,7 @@ public:
     }
     void updateParams(){
         cx+=speed;
+        wingState=(wingState+1)%4;
     }
 };
 
